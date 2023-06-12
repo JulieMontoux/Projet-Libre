@@ -23,7 +23,7 @@ session_start();
             <option selected>Type de produit</option>
             <?php
             while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['type'] . "'>'" . $row['NomType'] . "'</option>";
+              echo "<option value='" . $row['idType'] . "'>'" . $row['NomType'] . "'</option>";
             }
             ?>     
         </select>
@@ -34,7 +34,7 @@ session_start();
             <option selected>Variété</option>
             <?php
             while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['variete'] . "'>'" . $row['NomVariete'] . "'</option>";
+              echo "<option value='" . $row['idVariete'] . "'>'" . $row['NomVariete'] . "'</option>";
             }
             ?> 
         </select>
@@ -45,7 +45,7 @@ session_start();
             <option selected>Poids</option>
             <?php
             while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['poids'] . "'>'" . $row['Poids'] . "'</option>";
+              echo "<option value='" . $row['idPoids'] . "'>'" . $row['Poids'] . "'</option>";
             }
             ?> 
         </select>
@@ -56,7 +56,7 @@ session_start();
             <option selected>Quantité</option>
             <?php
             while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['quantite'] . "'>'" . $row['Nombre'] . "'</option>";
+              echo "<option value='" . $row['idQuantite'] . "'>'" . $row['Nombre'] . "'</option>";
             }
             ?> 
         </select>
@@ -67,7 +67,7 @@ session_start();
             <option selected>Prix</option>
             <?php
             while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['prix'] . "'>'" . $row['Prix'] . "'</option>";
+              echo "<option value='" . $row['idPrix'] . "'>'" . $row['Prix'] . "'</option>";
             }
             ?> 
         </select>
