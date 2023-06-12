@@ -8,10 +8,7 @@
     <title>Insertion - Vente Directe</title>
 </head>
 <body>
-<!-- remplissage des stocks -->
-<!-- panier -->
-<!-- closing fin de journée -->
-<!-- factures -->
+<!-- formulaire entrées produits -->
 
 </body>
 </html>
