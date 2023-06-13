@@ -8,14 +8,8 @@
     <title>Insertion - Vente Directe</title>
 </head>
 <body>
-<!-- inclusion de la config bdd -->
-<?php
-include('config.php');
-session_start();
-?>
 <!-- inclusion de la navbar -->
 <?php include('navbar.php');?>
-
 <!-- formulaire entrées produits -->
 <h4 class="text-center">Vous êtes sur la page de remise à niveau du stock.</h4>
 <div class="container">
@@ -26,8 +20,11 @@ session_start();
         <select class="form-select" aria-label="Default select example" name="type">
             <option selected>Type de produit</option>
             <?php
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idType'] . "'>'" . $row['NomType'] . "'</option>";
+            $query = "SELECT * FROM type";
+            $result = $mysqli->query($query);
+
+            while ($row = $result->fetch_assoc()) {
+              printf("%s (%s)\n", $row["Name"], $row["CountryCode"]);
             }
             ?>     
         </select>

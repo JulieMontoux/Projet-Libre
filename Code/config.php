@@ -1,12 +1,15 @@
 <?php
-$host='localhost';
-$utilisateur='root';
-$password='root';
-$bdd='vente';
-$cnx=mysqli_connect($host,$utilisateur,$password,$bdd);
-if(!$cnx){
-    echo "No connected";
-}
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'vente';
 
-$cnx->set_charset("utf8mb4");
+//On établit la connexion
+$mysqli = new mysqli($servername, $username, $password, $database);
+
+//On vérifie la connexion
+if($mysqli->connect_error){
+    error_log('Connection error: ' . $mysqli->connect_error);
+}
+echo 'Connexion réussie';
 ?>
