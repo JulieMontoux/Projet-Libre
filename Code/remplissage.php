@@ -1,3 +1,7 @@
+<?php
+include("config.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -23,8 +27,8 @@
             $query = "SELECT * FROM type";
             $result = $mysqli->query($query);
 
-            while ($row = $result->fetch_assoc()) {
-              printf("%s (%s)\n", $row["Name"], $row["CountryCode"]);
+            while ($row = mysqli_fetch_array($result)) {
+              echo "<option value='" . $row['idType'] . "'>'" . $row['NomT'] . "'</option>";
             }
             ?>     
         </select>
