@@ -16,6 +16,8 @@ L'entreprise X souhaite avoir une solution applicative pour pouvoir gérer son s
 Le panier final doit-il être dans stocker dans la bdd? 
 Comment faire la partie closing si non? 
 
+- faire une liste pour collecter le panier et faire le closing
+
 ## Base de données
 Diagramme de classe représentant la base de données sur la gestion du stock. 
 ![Base de données première ébauche](Images/diagbdd1.png)

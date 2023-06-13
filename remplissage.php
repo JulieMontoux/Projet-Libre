@@ -8,10 +8,14 @@
     <title>Insertion - Vente Directe</title>
 </head>
 <body>
+<!-- inclusion de la config bdd -->
 <?php
-include("config.php");
+include('config.php');
 session_start();
 ?>
+<!-- inclusion de la navbar -->
+<?php include('navbar.php');?>
+
 <!-- formulaire entrées produits -->
 <h4 class="text-center">Vous êtes sur la page de remise à niveau du stock.</h4>
 <div class="container">
