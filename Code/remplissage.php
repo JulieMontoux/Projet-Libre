@@ -20,6 +20,7 @@ include("config.php");
     <div class="col">
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
+<<<<<<< HEAD
         <select class="form-select" aria-label="Default select example" name="type">
           <option selected>Type de produit</option>
           <?php
@@ -63,6 +64,9 @@ include("config.php");
             <option selected>Prix</option>
             
         </select>
+=======
+        
+>>>>>>> 62cebd2b7517c7f20317c3fe530862c3cc52dd80
       </div>
     </div>
   </div>
