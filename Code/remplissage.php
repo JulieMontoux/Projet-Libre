@@ -42,11 +42,11 @@ include("config.php");
           <select class="form-select" aria-label="Default select example" name="variete">
               <option selected>Variété</option>;
               <?php
-              if(isset($_POST['Type'])) {
-                $selectedType = $_POST['Type'];
-              }
+              // if(isset($_POST['Type'])) {
+              //   $selectedType = $_POST['Type'];
+              // }
 
-              $query = "SELECT * FROM variete WHERE idType_id = ". $selectedType .";";
+              $query = "SELECT * FROM variete WHERE idType_id = 1";
               $result = $mysqli->query($query);
 
               if (mysqli_num_rows($result) > 0) {
@@ -55,11 +55,9 @@ include("config.php");
                   echo "<option value ='". $row["idVariete"]."'>" . $row["nomV"]. "</option>";
                 }
               }
-
-
               ?>
           </select>
-        </div>;
+        </div>
         <div class="mb-3">
           <label for="formGroupExampleInput" class="form-label">Choisissez le poids</label>
           <select class="form-select" aria-label="Default select example" name="poids">
