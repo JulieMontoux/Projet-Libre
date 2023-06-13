@@ -18,93 +18,101 @@ include("config.php");
 <div class="container">
   <div class="row">
     <div class="col">
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
-        <select class="form-select" aria-label="Default select example" name="type">
-          <option selected>Type de produit</option>
-          <?php
-          $query = "SELECT * FROM type";
-          $result = $mysqli->query($query);
-
-          if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-              echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
-              $type= $row["idType"];
-            }
-          }
-          ?>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Choisissez la variéte</label>
-        <select class="form-select" aria-label="Default select example" name="variete">
-            <option selected>Variété</option>
+      <form action="remplissage.php" method="post">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
+          <select class="form-select" aria-label="Default select example" name="Type">
+            <option selected>Type de produit</option>
             <?php
-            $query = "SELECT * FROM variete WHERE idType_id=". $type . ";";
+            $query = "SELECT * FROM type";
             $result = $mysqli->query($query);
-
+  
             if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-              echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
+              }
             }
-          }
-          ?>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Choisissez le poids</label>
-        <select class="form-select" aria-label="Default select example" name="poids">
-            <option selected>Poids</option>
-            <?php
-          $query = "SELECT * FROM poids";
-          $result = $mysqli->query($query);
+            ?>
+          </select>
+        </div>
 
-          if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-              echo "<option value ='". $row["idPoids"]."'>" . $row["kg"]. "</option>";
-            }
-          }
-          ?>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Choisissez la quantité</label>
-        <select class="form-select" aria-label="Default select example" name="quantite">
-            <option selected>Quantité</option>
-            <?php
-          $query = "SELECT * FROM quantite";
-          $result = $mysqli->query($query);
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Choisissez la variété</label>
+          <select class="form-select" aria-label="Default select example" name="variete">
+              <option selected>Variété</option>;
+              <?php
+              if(isset($_POST['Type'])) {
+                $selectedType = $_POST['Type'];
+              }
 
-          if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-              echo "<option value ='". $row["idQuantite"]."'>" . $row["nombre"]. "</option>";
-            }
-          }
-          ?>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Choisissez le prix</label>
-        <select class="form-select" aria-label="Default select example" name="prix">
-            <option selected>Prix</option>
-            <?php
-          $query = "SELECT * FROM prix";
-          $result = $mysqli->query($query);
+              $query = "SELECT * FROM variete WHERE idType_id = ". $selectedType .";";
+              $result = $mysqli->query($query);
 
-          if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-              echo "<option value ='". $row["idPrix"]."'>" . $row["montant"]. "</option>";
+              if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+                while($row = mysqli_fetch_assoc($result)) {
+                  echo "<option value ='". $row["idVariete"]."'>" . $row["nomV"]. "</option>";
+                }
+              }
+
+
+              ?>
+          </select>
+        </div>;
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Choisissez le poids</label>
+          <select class="form-select" aria-label="Default select example" name="poids">
+              <option selected>Poids</option>
+              <?php
+            $query = "SELECT * FROM poids";
+            $result = $mysqli->query($query);
+  
+            if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                echo "<option value ='". $row["idPoids"]."'>" . $row["kg"]. "</option>";
+              }
             }
-          }
-          ?>
-        </select>
+            ?>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Choisissez la quantité</label>
+          <select class="form-select" aria-label="Default select example" name="quantite">
+              <option selected>Quantité</option>
+              <?php
+            $query = "SELECT * FROM quantite";
+            $result = $mysqli->query($query);
+  
+            if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                echo "<option value ='". $row["idQuantite"]."'>" . $row["nombre"]. "</option>";
+              }
+            }
+            ?>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Choisissez le prix</label>
+          <select class="form-select" aria-label="Default select example" name="prix">
+              <option selected>Prix</option>
+              <?php
+            $query = "SELECT * FROM prix";
+            $result = $mysqli->query($query);
+  
+            if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                echo "<option value ='". $row["idPrix"]."'>" . $row["montant"]. "</option>";
+              }
+            }
+            ?>
+          </select>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
   <div class="d-grid gap-2 col-6 mx-auto">
     <button class="btn btn-primary" type="button">Envoyer</button>
