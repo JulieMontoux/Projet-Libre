@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `variete` (
   `nomV` varchar(50) NOT NULL,
   `idType_id` int NOT NULL,
   PRIMARY KEY (`idVariete`)
+  FOREIGN KEY (idType_id) REFERENCES Type(idType)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 COMMIT;
 
