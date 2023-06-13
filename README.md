@@ -20,6 +20,6 @@ Comment faire la partie closing sinon?
 
 ## Base de données
 Diagramme de classe représentant la base de données sur la gestion du stock. 
-![Base de données première ébauche](Images/diagbdd1.png)
+![Base de données deuxième ébauche](Images/diagbdd2.png)
 
 ## Maquettes
