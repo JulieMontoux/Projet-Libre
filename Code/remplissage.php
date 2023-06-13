@@ -1,6 +1,5 @@
 <?php
 include("config.php");
-session_start();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,59 +21,47 @@ session_start();
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
         <select class="form-select" aria-label="Default select example" name="type">
-            <option selected>Type de produit</option>
-            <?php
-            $query = "SELECT * FROM type";
-            $result = $mysqli->query($query);
+          <option selected>Type de produit</option>
+          <?php
+          $query = "SELECT * FROM type";
+          $result = $mysqli->query($query);
 
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idType'] . "'>'" . $row['NomT'] . "'</option>";
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+              echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
             }
-            ?>     
+          }
+          ?>
+          <option value=""></option>
         </select>
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez la variéte</label>
         <select class="form-select" aria-label="Default select example" name="variete">
             <option selected>Variété</option>
-            <?php
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idVariete'] . "'>'" . $row['NomVariete'] . "'</option>";
-            }
-            ?> 
+            
         </select>
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez le poids</label>
         <select class="form-select" aria-label="Default select example" name="poids">
             <option selected>Poids</option>
-            <?php
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idPoids'] . "'>'" . $row['Poids'] . "'</option>";
-            }
-            ?> 
+            
         </select>
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez la quantité</label>
         <select class="form-select" aria-label="Default select example" name="quantite">
             <option selected>Quantité</option>
-            <?php
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idQuantite'] . "'>'" . $row['Nombre'] . "'</option>";
-            }
-            ?> 
+             
         </select>
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Choisissez le prix</label>
         <select class="form-select" aria-label="Default select example" name="prix">
             <option selected>Prix</option>
-            <?php
-            while ($row = mysqli_fetch_array($result)) {
-              echo "<option value='" . $row['idPrix'] . "'>'" . $row['Prix'] . "'</option>";
-            }
-            ?> 
+            
         </select>
       </div>
     </div>
