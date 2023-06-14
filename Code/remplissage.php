@@ -20,33 +20,35 @@ include("config.php");
     <div class="col">
       <form action="remplissage.php" method="post">
         <div class="mb-3">
-          <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
-          <select class="form-select" aria-label="Default select example" name="Type">
-            <option selected>Type de produit</option>
-            <?php
-            $query = "SELECT * FROM type";
-            $result = $mysqli->query($query);
-  
-            if (mysqli_num_rows($result) > 0) {
-              // output data of each row
-              while($row = mysqli_fetch_assoc($result)) {
-                echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
+          <form method="post" name="Type">
+            <label for="formGroupExampleInput" class="form-label">Choisissez le type de produit</label>
+            <select class="form-select" aria-label="Default select example" name="Type">
+              <option selected>Type de produit</option>
+              <?php
+              $query = "SELECT * FROM type";
+              $result = $mysqli->query($query);
+    
+              if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while($row = mysqli_fetch_assoc($result)) {
+                  echo "<option value ='". $row["idType"]."'>" . $row["nomT"]. "</option>";
+                }
               }
-            }
-            ?>
-          </select>
+              ?>
+            </select>
+          </form>
         </div>
-
         <div class="mb-3">
           <label for="formGroupExampleInput" class="form-label">Choisissez la variété</label>
           <select class="form-select" aria-label="Default select example" name="variete">
               <option selected>Variété</option>;
-              <?php
-              // if(isset($_POST['Type'])) {
-              //   $selectedType = $_POST['Type'];
-              // }
+              <!-- Fonction OnChange pour pouvoir modifier l'affichage de select variete -->
+              <script>
+              </script>
 
-              $query = "SELECT * FROM variete WHERE idType_id = 1";
+              <?php
+              $selected = $_POST["Type"];
+              $query = "SELECT * FROM variete WHERE idType_id =" . $selected .";";
               $result = $mysqli->query($query);
 
               if (mysqli_num_rows($result) > 0) {
@@ -56,6 +58,7 @@ include("config.php");
                 }
               }
               ?>
+
           </select>
         </div>
         <div class="mb-3">
