@@ -44,8 +44,8 @@ include("config.php");
               <option selected>Variété</option>;
               <!-- Fonction OnChange pour pouvoir modifier l'affichage de select variete -->
               <script>
-              </script>
 
+              </script>
               <?php
               $selected = $_POST["Type"];
               $query = "SELECT * FROM variete WHERE idType_id =" . $selected .";";

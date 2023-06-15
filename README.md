@@ -7,7 +7,7 @@ L'entreprise X souhaite avoir une solution applicative pour pouvoir gérer son s
 - Maquettes
 
 ## Idées
-- techno: Tailwind? Bootstrap? 
+- techno: Tailwind? Bootstrap? JS ou PHP?
 - design: simple
 - couleurs: blanc, gris foncé, vert
 - pages: form de remplissage bdd, vente, closing fin de journée (feuille de vente journalière + form CB & espèces), générateur de facture
