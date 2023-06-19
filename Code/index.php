@@ -231,7 +231,7 @@
     localStorage.setItem('salesData', JSON.stringify(salesData));
 
     // Naviguer vers la page de détails des ventes
-    window.location.href = 'details-ventes.html';
+    window.location.href = 'detailvente.html';
   }
 
   </script>
