@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Détails des Ventes</title>
+</head>
+<body>
+  <h1>Détails des Ventes</h1>
+
+  <script>
+    // Récupérer les détails des ventes depuis le stockage local
+    var salesData = localStorage.getItem('salesData');
+    salesData = JSON.parse(salesData);
+
+    // Afficher les détails des ventes
+    if (salesData) {
+      document.write('<h2>Mode de paiement : ' + salesData.paymentMethod + '</h2>');
+      document.write('<h2>Total des ventes : $' + salesData.total.toFixed(2) + '</h2>');
+      
+      document.write('<h2>Détails par fruit :</h2>');
+      for (var fruit in salesData.items) {
+        document.write('<h3>' + fruit + '</h3>');
+        
+        for (var variety in salesData.items[fruit]) {
+          var quantity = salesData.items[fruit][variety];
+          document.write(variety + ': ' + quantity + ' vente(s)<br>');
+        }
+      }
+    } else {
+      document.write('<p>Aucune vente effectuée pour le moment.</p>');
+    }
+
+    // Effacer les données de vente du stockage local après les avoir affichées
+    localStorage.removeItem('salesData');
+  </script>
+</body>
+</html>
