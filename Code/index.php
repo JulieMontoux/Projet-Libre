@@ -3,6 +3,7 @@
 <head>
   <title>Vente de Fruits</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
     /* CSS pour la mise en page */
     body {
@@ -39,8 +40,8 @@
       text-align: center;
     }
 
-    .payment-method label {
-      margin-right: 10px;
+    .payment-method .btn-group {
+      margin-bottom: 10px;
     }
 
     .total-price {
@@ -51,6 +52,12 @@
     .checkout-button {
       text-align: center;
       margin-top: 20px;
+    }
+
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -97,6 +104,7 @@
       // Mettre à jour le mode de paiement
       function updatePaymentMethod(paymentMethod) {
         salesData.paymentMethod = paymentMethod;
+        localStorage.setItem('salesData', JSON.stringify(salesData));
       }
 
       // Mettre à jour le stockage local
@@ -127,8 +135,8 @@
       });
 
       // Gérer le choix du mode de paiement
-      $('.payment-method input').change(function() {
-        var paymentMethod = $(this).val();
+      $('.payment-method .btn').click(function() {
+        var paymentMethod = $(this).data('payment-method');
         updatePaymentMethod(paymentMethod);
         updateLocalStorage();
       });
@@ -139,6 +147,13 @@
           alert('Votre panier est vide. Veuillez ajouter des fruits avant de valider.');
           return;
         }
+
+        if (salesData.paymentMethod === '') {
+          $('.error-message').text('Veuillez sélectionner un mode de paiement.');
+          return;
+        }
+
+        $('.error-message').text('');
 
         // Ajouter les ventes dans l'historique
         var salesHistory = localStorage.getItem('salesHistory');
@@ -166,6 +181,13 @@
       // Initialiser l'affichage
       updateBasket();
       updateTotalPrice();
+
+      // Restaurer le mode de paiement précédent s'il existe
+      var previousPaymentMethod = localStorage.getItem('paymentMethod');
+      if (previousPaymentMethod) {
+        $('.payment-method .btn[data-payment-method="' + previousPaymentMethod + '"]').addClass('active');
+        updatePaymentMethod(previousPaymentMethod);
+      }
     });
   </script>
 </head>
@@ -186,22 +208,24 @@
   </div>
 
   <div class="payment-method">
-    <label for="card">Carte</label>
-    <input type="radio" name="payment" id="card" value="Carte">
-
-    <label for="cash">Espèces</label>
-    <input type="radio" name="payment" id="cash" value="Espèces">
-
-    <label for="cheque">Chèque</label>
-    <input type="radio" name="payment" id="cheque" value="Chèque">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-secondary">
+        <input type="radio" name="payment" data-payment-method="Carte"> Carte
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="payment" data-payment-method="Chèque"> Chèque
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="payment" data-payment-method="Espèces"> Espèces
+      </label>
+    </div>
   </div>
 
-  <div class="total-price">
-    Prix total: $0.00
-  </div>
+  <div class="total-price"></div>
 
   <div class="checkout-button">
-    <button>Valider le panier</button>
+    <button class="btn btn-primary">Valider la vente</button>
+    <div class="error-message"></div>
   </div>
 </body>
 </html>
