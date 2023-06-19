@@ -2,35 +2,84 @@
 <html>
 <head>
   <title>Détails des Ventes</title>
+  <meta charset="utf-8">
+  <style>
+    /* CSS pour la mise en page */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Récupérer les ventes précédentes depuis le stockage local
+      var salesHistory = localStorage.getItem('salesHistory');
+      salesHistory = JSON.parse(salesHistory);
+
+      // Fonction pour traduire les accents
+      function translateAccents(text) {
+        var accentsMap = {
+          'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+          'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
+          'â': 'a', 'ê': 'e', 'î': 'i', 'ô': 'o', 'û': 'u',
+          'ä': 'a', 'ë': 'e', 'ï': 'i', 'ö': 'o', 'ü': 'u',
+          'ã': 'a', 'õ': 'o', 'ñ': 'n', 'ç': 'c', 'ß': 'ss'
+        };
+
+        return text.replace(/[áéíóúàèìòùâêîôûäëïöüãõñçß]/gi, function (match) {
+          return accentsMap[match];
+        });
+      }
+
+      // Fonction pour afficher les détails des ventes
+      function displaySalesData() {
+        // Vérifier s'il y a des ventes enregistrées
+        if (salesHistory && salesHistory.length > 0) {
+          for (var i = 0; i < salesHistory.length; i++) {
+            var salesData = salesHistory[i];
+
+            var salesInfo = '<h2>Mode de paiement : ' + salesData.paymentMethod + '</h2>';
+            salesInfo += '<h2>Total des ventes : $' + salesData.total.toFixed(2) + '</h2>';
+
+            salesInfo += '<h2>Détails par fruit :</h2>';
+            for (var fruit in salesData.items) {
+              salesInfo += '<h3>' + translateAccents(fruit) + '</h3>';
+
+              for (var variety in salesData.items[fruit]) {
+                var quantity = salesData.items[fruit][variety];
+                salesInfo += translateAccents(variety) + ': ' + quantity + ' vente(s)<br>';
+              }
+            }
+
+            $('body').append(salesInfo);
+          }
+        } else {
+          $('body').append('<p>Aucune vente effectuée pour le moment.</p>');
+        }
+      }
+
+      // Appeler la fonction pour afficher les détails des ventes
+      displaySalesData();
+
+      // Bouton pour refaire un panier
+      $('body').append('<button onclick="createNewCart()">Refaire un panier</button>');
+
+      // Fonction pour refaire un panier
+      function createNewCart() {
+        // Effacer les données de vente actuelles du stockage local
+        localStorage.removeItem('salesData');
+
+        // Rediriger vers la page d'accueil ou toute autre page de votre choix pour refaire le panier
+        window.location.href = 'index.php';
+      }
+    });
+  </script>
 </head>
 <body>
   <h1>Détails des Ventes</h1>
-
-  <script>
-    // Récupérer les détails des ventes depuis le stockage local
-    var salesData = localStorage.getItem('salesData');
-    salesData = JSON.parse(salesData);
-
-    // Afficher les détails des ventes
-    if (salesData) {
-      document.write('<h2>Mode de paiement : ' + salesData.paymentMethod + '</h2>');
-      document.write('<h2>Total des ventes : $' + salesData.total.toFixed(2) + '</h2>');
-      
-      document.write('<h2>Détails par fruit :</h2>');
-      for (var fruit in salesData.items) {
-        document.write('<h3>' + fruit + '</h3>');
-        
-        for (var variety in salesData.items[fruit]) {
-          var quantity = salesData.items[fruit][variety];
-          document.write(variety + ': ' + quantity + ' vente(s)<br>');
-        }
-      }
-    } else {
-      document.write('<p>Aucune vente effectuée pour le moment.</p>');
-    }
-
-    // Effacer les données de vente du stockage local après les avoir affichées
-    localStorage.removeItem('salesData');
-  </script>
 </body>
 </html>
