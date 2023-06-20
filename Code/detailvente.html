@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Détails des Ventes</title>
+  <title>Détail de la Vente</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
   <style>
     /* CSS pour la mise en page */
     body {
@@ -16,128 +17,65 @@
 
     table {
       margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
     }
 
     th, td {
-      padding: 10px;
-      text-align: center;
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
-    
-    .totals {
-      text-align: center;
-      margin-top: 20px;
-    }
-    
-    .totals h3 {
-      margin-bottom: 10px;
-    }
-    
-    .totals p {
-      margin: 0;
+
+    th {
+      background-color: #f2f2f2;
     }
   </style>
+</head>
+<body>
+  <h1>Détail de la Vente</h1>
+
+  <table class="sale-details-table">
+    <thead>
+      <tr>
+        <th>Fruit</th>
+        <th>Quantité vendue (kg)</th>
+      </tr>
+    </thead>
+    <tbody id="detail-vente-body"></tbody>
+  </table>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
-      // Récupérer l'historique des ventes depuis le stockage local
-      var salesHistory = localStorage.getItem('salesHistory');
-      if (!salesHistory) {
-        salesHistory = [];
-      } else {
-        salesHistory = JSON.parse(salesHistory);
-      }
+      // Récupérer les détails du panier depuis le stockage local
+      var basketItems = JSON.parse(localStorage.getItem('basketItems'));
 
-      // Afficher les détails des ventes
-      function showSalesDetails() {
-        var salesDetailsTable = $('#sales-details-table tbody');
-        salesDetailsTable.empty();
+      // Vérifier si des articles sont présents dans le panier
+      if (basketItems && basketItems.length > 0) {
+        // Obtenir les fruits uniques dans le panier
+        var uniqueFruits = [...new Set(basketItems.map(item => item.fruit))];
 
-        for (var i = 0; i < salesHistory.length; i++) {
-          var salesData = salesHistory[i];
-          var items = salesData.items;
+        // Fonction pour générer le tableau des détails de la vente
+        function generateTable() {
+          // Générer les lignes du tableau pour chaque fruit
+          var tableRows = '';
+          uniqueFruits.forEach(function(fruit) {
+            var fruitItems = basketItems.filter(item => item.fruit === fruit);
+            var totalQuantity = fruitItems.reduce((acc, item) => acc + item.quantity, 0);
+            tableRows += '<tr>';
+            tableRows += '<td>' + fruit + '</td>';
+            tableRows += '<td>' + totalQuantity.toFixed(2) + 'kg</td>'; // Modifier cette ligne
+            tableRows += '</tr>';
+          });
 
-          var rowHtml = '<tr>';
-
-          // Ajouter les détails de chaque panier
-          var basketHtml = '';
-          for (var fruit in items) {
-            var fruitItem = items[fruit];
-
-            for (var variety in fruitItem) {
-              var quantity = fruitItem[variety];
-
-              basketHtml += fruit + ' (' + variety + '): ' + quantity + '<br>';
-            }
-          }
-          rowHtml += '<td>' + basketHtml + '</td>';
-
-          rowHtml += '</tr>';
-
-          salesDetailsTable.append(rowHtml);
+          $('#detail-vente-body').html(tableRows);
         }
-        
-        // Calculer les totaux pour chaque mode de paiement
-        var cardTotal = 0;
-        var chequeTotal = 0;
-        var especeTotal = 0;
-        for (var j = 0; j < salesHistory.length; j++) {
-          var salesDataItem = salesHistory[j];
-          var paymentMethod = salesDataItem.paymentMethod;
-          var total = salesDataItem.total;
 
-          if (paymentMethod === 'Carte') {
-            cardTotal += total;
-          } else if (paymentMethod === 'Chèque') {
-            chequeTotal += total;
-          } else if (paymentMethod === 'Espèces') {
-            especeTotal += total;
-          }
-        }
-        
-        // Afficher les totaux
-        var totalsHtml = '<div class="totals">';
-        totalsHtml += '<h3>Totaux :</h3>';
-        totalsHtml += '<p>Totaux Carte: ' + cardTotal.toFixed(2) + '</p>';
-        totalsHtml += '<p>Totaux Chèque: ' + chequeTotal.toFixed(2) + '</p>';
-        totalsHtml += '<p>Totaux Espèces: ' + especeTotal.toFixed(2) + '</p>';
-        totalsHtml += '</div>';
-        
-        $('#totals-container').html(totalsHtml);
+        // Générer le tableau des détails de la vente
+        generateTable();
       }
-
-      // Gérer le clic sur le bouton "Nouvelle Journée"
-      $('#new-day-button').click(function() {
-        // Supprimer les paniers dans l'historique des ventes
-        salesHistory = [];
-        localStorage.setItem('salesHistory', JSON.stringify(salesHistory));
-
-        // Actualiser l'affichage
-        showSalesDetails();
-      });
-
-      // Afficher les détails des ventes lors du chargement de la page
-      showSalesDetails();
     });
   </script>
-</head>
-<body>
-  <h1>Détails des Ventes</h1>
-
-  <table id="sales-details-table" class="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Panier</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Les données seront ajoutées ici -->
-    </tbody>
-  </table>
-
-  <div id="totals-container"></div>
-
-  <div class="text-center">
-    <button id="new-day-button" class="btn btn-primary">Nouvelle Journée</button>
-  </div>
 </body>
 </html>

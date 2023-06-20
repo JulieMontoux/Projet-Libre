@@ -4,6 +4,7 @@
   <title>Vente de Fruits</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
   <style>
     /* CSS pour la mise en page */
     body {
@@ -19,11 +20,43 @@
       justify-content: center;
     }
 
-    .fruit-list li {
+    .fruit-card {
       margin: 10px;
       padding: 10px;
       border: 1px solid #ccc;
       cursor: pointer;
+      text-align: center;
+      border-radius: 10px; /* Bordures arrondies */
+    }
+
+    .fruit-card img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px; /* Bordures arrondies */
+    }
+
+    .varieties {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .variety-card {
+      margin: 5px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      text-align: center;
+      border-radius: 10px; /* Bordures arrondies */
+    }
+
+    .variety-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px; /* Bordures arrondies */
     }
 
     .basket {
@@ -63,169 +96,169 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
-      // Initialiser les données de vente dans le stockage local
-      var salesData = localStorage.getItem('salesData');
-      if (!salesData) {
-        salesData = {
-          items: {},
-          total: 0,
-          paymentMethod: ''
-        };
-        localStorage.setItem('salesData', JSON.stringify(salesData));
-      } else {
-        salesData = JSON.parse(salesData);
-      }
-
-      // Mettre à jour le panier
-      function updateBasket() {
-        var basket = $('.basket');
-        basket.empty();
-
-        for (var fruit in salesData.items) {
-          var fruitItem = salesData.items[fruit];
-
-          var itemHtml = '<h3>' + fruit + '</h3>';
-
-          for (var variety in fruitItem) {
-            var quantity = fruitItem[variety];
-            itemHtml += '<p>' + variety + ': ' + quantity + '</p>';
-          }
-
-          basket.append(itemHtml);
+      // Récupérer les fruits, les variétés, les prix et les images depuis la base de données
+      var fruits = [
+        {
+          name: "Autres",
+          varieties: ["Confiture", "Jus plat", "Jus pétillant"],
+          prices: [3.90, 2.5, 3],
+          images: ["../images/confiture.jpg", "../images/jus_plat.jpg", "../images/jus_petillant.jpg"]
+        },
+        {
+          name: "Pommes",
+          varieties: ["Golden", "Granny Smith", "Reinette", "Royal Gala", "Chantecler", "Braeburn", "Fuji", "Pink Lady"],
+          prices: [3.3, 2.7, 3.6, 2.9, 3.1, 2.9, 3.3, 4.8],
+          images: ["../images/golden.jpg", "../images/granny_smith.jpg", "../images/reinette.jpg", "../images/royal_gala.jpg", "../images/chantecler.jpg", "../images/braeburn.jpg", "../images/fuji.jpg", "../images/pink_lady.jpg"]
+        },
+        {
+          name: "Cerises",
+          varieties: ["Burlat", "Summit", "Bigalise", "Régina"],
+          prices: [11.65, 8, 15.6, 7.8],
+          images: ["../images/burlat.jpg", "../images/summit.jpg", "../images/bigalise.jpg", "../images/regina.jpg"]
+        },
+        {
+          name: "Poires",
+          varieties: ["Williams"],
+          prices: [3.4],
+          images: ["../images/williams.jpg"]
+        },
+        {
+          name: "Kiwis",
+          varieties: ["Hayward"],
+          prices: [2.1],
+          images: ["../images/hayward.jpg"]
         }
-      }
+      ];
 
-      // Mettre à jour le prix total
-      function updateTotalPrice() {
-        var totalPrice = $('.total-price');
-        totalPrice.text('Prix total: $' + salesData.total.toFixed(2));
-      }
+      // Générer la liste de fruits avec les variétés et les images
+      var fruitList = $('.fruit-list');
+      fruits.forEach(function(fruit) {
+        var fruitHtml = '<div class="fruit-card rounded">';
+        fruitHtml += '<img src="' + fruit.images[0] + '" alt="' + fruit.name + '" class="rounded">';
+        fruitHtml += '<h4>' + fruit.name + '</h4>';
+        fruitHtml += '</div>';
 
-      // Mettre à jour le mode de paiement
-      function updatePaymentMethod(paymentMethod) {
-        salesData.paymentMethod = paymentMethod;
-        localStorage.setItem('salesData', JSON.stringify(salesData));
-      }
-
-      // Mettre à jour le stockage local
-      function updateLocalStorage() {
-        localStorage.setItem('salesData', JSON.stringify(salesData));
-      }
+        fruitList.append(fruitHtml);
+      });
 
       // Gérer le clic sur un fruit
-      $('.fruit-list li').click(function() {
-        var fruit = $(this).data('fruit');
-        var variety = $(this).data('variety');
+      $('.fruit-card').click(function() {
+        var selectedFruit = $(this).find('h4').text();
+        var selectedVarieties = fruits.find(function(fruit) {
+          return fruit.name === selectedFruit;
+        }).varieties;
 
-        if (!salesData.items[fruit]) {
-          salesData.items[fruit] = {};
-        }
+        // Générer la liste des variétés pour le fruit sélectionné
+        var varietyList = '<div class="varieties">';
+        selectedVarieties.forEach(function(variety, index) {
+          varietyList += '<div class="variety-card rounded">';
+          varietyList += '<img src="' + fruits.find(function(fruit) {
+            return fruit.name === selectedFruit;
+          }).images[index] + '" alt="' + variety + '" class="rounded">';
+          varietyList += '<h5>' + variety + '</h5>';
+          varietyList += '</div>';
+        });
+        varietyList += '</div>';
 
-        if (!salesData.items[fruit][variety]) {
-          salesData.items[fruit][variety] = 1;
-        } else {
-          salesData.items[fruit][variety]++;
-        }
+        // Afficher les variétés pour le fruit sélectionné
+        $(this).siblings('.varieties').remove();
+        $(this).after(varietyList);
 
-        salesData.total += 1;
+        // Gérer le clic sur une variété
+        $('.variety-card').click(function() {
+          var selectedVariety = $(this).find('h5').text();
+          var selectedPrice = fruits.find(function(fruit) {
+            return fruit.name === selectedFruit;
+          }).prices[selectedVarieties.indexOf(selectedVariety)];
+          var selectedQuantity = prompt('Quantité vendue (en kg) :');
+          var totalPrice = selectedPrice * parseFloat(selectedQuantity);
 
-        updateBasket();
+          addToBasket(selectedFruit, selectedVariety, parseFloat(selectedQuantity), totalPrice);
+
+        });
+      });
+
+      // Fonction pour ajouter un fruit au panier
+      function addToBasket(fruit, variety, quantity, price) {
+        var basketItem = '<li>' + fruit + ' (' + variety + ') - ' + quantity.toString() + 'kg - ' + price.toFixed(2) + '€</li>';
+        $('.basket ul').append(basketItem);
         updateTotalPrice();
-        updateLocalStorage();
-      });
-
-      // Gérer le choix du mode de paiement
-      $('.payment-method .btn').click(function() {
-        var paymentMethod = $(this).data('payment-method');
-        updatePaymentMethod(paymentMethod);
-        updateLocalStorage();
-      });
-
-      // Gérer la validation du panier
-      $('.checkout-button button').click(function() {
-        if (salesData.total === 0) {
-          alert('Votre panier est vide. Veuillez ajouter des fruits avant de valider.');
-          return;
-        }
-
-        if (salesData.paymentMethod === '') {
-          $('.error-message').text('Veuillez sélectionner un mode de paiement.');
-          return;
-        }
-
-        $('.error-message').text('');
-
-        // Ajouter les ventes dans l'historique
-        var salesHistory = localStorage.getItem('salesHistory');
-        if (!salesHistory) {
-          salesHistory = [];
-        } else {
-          salesHistory = JSON.parse(salesHistory);
-        }
-
-        salesHistory.push(salesData);
-        localStorage.setItem('salesHistory', JSON.stringify(salesHistory));
-
-        // Effacer les données du panier
-        salesData = {
-          items: {},
-          total: 0,
-          paymentMethod: ''
-        };
-        localStorage.setItem('salesData', JSON.stringify(salesData));
-
-        // Rediriger vers la page des détails des ventes
-        window.location.href = 'detailvente.html';
-      });
-
-      // Initialiser l'affichage
-      updateBasket();
-      updateTotalPrice();
-
-      // Restaurer le mode de paiement précédent s'il existe
-      var previousPaymentMethod = localStorage.getItem('paymentMethod');
-      if (previousPaymentMethod) {
-        $('.payment-method .btn[data-payment-method="' + previousPaymentMethod + '"]').addClass('active');
-        updatePaymentMethod(previousPaymentMethod);
       }
+
+      // Fonction pour mettre à jour le prix total
+      function updateTotalPrice() {
+  var total = 0;
+  var basketItems = [];
+
+  $('.basket ul li').each(function() {
+    var price = parseFloat($(this).text().split(' - ')[1].slice(0, -1));
+    total += price;
+
+    var item = {
+      fruit: $(this).text().split(' (')[0],
+      variety: $(this).text().split(' (')[1].split(') -')[0],
+      quantity: parseFloat($(this).text().split(' - ')[0].split(' - ')[1]),
+      price: price.toFixed(2)
+    };
+
+    basketItems.push(item);
+  });
+
+  $('.total-price span').text(total.toFixed(2));
+
+  // Sauvegarder les détails du panier dans le stockage local
+  localStorage.setItem('basketItems', JSON.stringify(basketItems));
+}
+
+
+      // Gérer la sélection de la méthode de paiement
+      $('.payment-method button').click(function() {
+        $('.payment-method button').removeClass('active');
+        $(this).addClass('active');
+      });
+
+      // Gérer le clic sur le bouton de validation du panier
+      $('.checkout-button button').click(function() {
+        var paymentMethod = $('.payment-method button.active').text();
+        var totalPrice = parseFloat($('.total-price span').text());
+        if (!isNaN(totalPrice)) {
+          // Ajouter le code de redirection vers la page "detailvente" ici
+          window.location.href = 'detailvente.html';
+        } else {
+          $('.error-message').text('Le panier est vide.');
+        }
+      });
+      
     });
   </script>
 </head>
 <body>
   <h1>Vente de Fruits</h1>
 
-  <ul class="fruit-list">
-    <li data-fruit="Banane" data-variety="Cavendish">Banane (Cavendish)</li>
-    <li data-fruit="Banane" data-variety="Plantain">Banane (Plantain)</li>
-    <li data-fruit="Pomme" data-variety="Golden">Pomme (Golden)</li>
-    <li data-fruit="Pomme" data-variety="Granny Smith">Pomme (Granny Smith)</li>
-    <li data-fruit="Orange" data-variety="Valencia">Orange (Valencia)</li>
-    <li data-fruit="Orange" data-variety="Navel">Orange (Navel)</li>
-  </ul>
+  <div class="fruit-list"></div>
 
   <div class="basket">
-    <h2>Panier :</h2>
+    <h2>Panier</h2>
+    <ul></ul>
   </div>
 
   <div class="payment-method">
-    <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-secondary">
-        <input type="radio" name="payment" data-payment-method="Carte"> Carte
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" name="payment" data-payment-method="Chèque"> Chèque
-      </label>
-      <label class="btn btn-secondary">
-        <input type="radio" name="payment" data-payment-method="Espèces"> Espèces
-      </label>
+    <h3>Méthode de paiement :</h3>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-secondary">Carte de crédit</button>
+      <button type="button" class="btn btn-secondary">Espèces</button>
+      <button type="button" class="btn btn-secondary">Chèque</button>
     </div>
   </div>
 
-  <div class="total-price"></div>
+  <div class="total-price">
+    <h3>Prix total : <span>0.00</span>€</h3>
+  </div>
 
   <div class="checkout-button">
-    <button class="btn btn-primary">Valider la vente</button>
-    <div class="error-message"></div>
+    <button type="button" class="btn btn-primary">Valider le panier</button>
   </div>
+
+  <div class="error-message"></div>
 </body>
 </html>
