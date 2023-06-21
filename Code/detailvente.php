@@ -33,6 +33,7 @@
   </style>
 </head>
 <body>
+  <?php include('navbar.php');?>
   <h1>Détail de la Vente</h1>
 
   <table class="sale-details-table">

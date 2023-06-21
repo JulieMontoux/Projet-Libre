@@ -167,49 +167,58 @@
         // Gérer le clic sur une variété
         $('.variety-card').click(function() {
           var selectedVariety = $(this).find('h5').text();
+          var selectedQuantity = prompt('Quantité vendue :');
+
+        // Vérifier si la quantité saisie est un nombre valide
+        if (selectedQuantity !== null && selectedQuantity !== "" && !isNaN(selectedQuantity)) {
+          selectedQuantity = parseFloat(selectedQuantity);
           var selectedPrice = fruits.find(function(fruit) {
-            return fruit.name === selectedFruit;
+          return fruit.name === selectedFruit;
           }).prices[selectedVarieties.indexOf(selectedVariety)];
-          var selectedQuantity = prompt('Quantité vendue (en kg) :');
-          var totalPrice = selectedPrice * parseFloat(selectedQuantity);
+          var totalPrice = selectedPrice * selectedQuantity;
 
-          addToBasket(selectedFruit, selectedVariety, parseFloat(selectedQuantity), totalPrice);
-
-        });
+          addToBasket(selectedFruit, selectedVariety, selectedQuantity, totalPrice);
+        }
       });
 
-      // Fonction pour ajouter un fruit au panier
-      function addToBasket(fruit, variety, quantity, price) {
-        var basketItem = '<li>' + fruit + ' (' + variety + ') - ' + quantity.toString() + 'kg - ' + price.toFixed(2) + '€</li>';
-        $('.basket ul').append(basketItem);
-        updateTotalPrice();
-      }
+      });
+
+     // Fonction pour ajouter un fruit au panier
+    function addToBasket(fruit, variety, quantity, price) {
+      var basketItem = '<li>' + fruit + ' (' + variety + ') - ' + quantity.toString() + 'kg - ' + price.toFixed(2) + '€</li>';
+      $('.basket ul').append(basketItem);
+      updateTotalPrice(); // Appel de la fonction pour mettre à jour le prix total
+    }
+
 
       // Fonction pour mettre à jour le prix total
       function updateTotalPrice() {
-  var total = 0;
-  var basketItems = [];
+        var total = 0;
+        var basketItems = [];
 
-  $('.basket ul li').each(function() {
-    var price = parseFloat($(this).text().split(' - ')[1].slice(0, -1));
-    total += price;
+        $('.basket ul li').each(function() {
+          var quantity = parseFloat($(this).text().split(' - ')[0].split(' - ')[1]);
+          var price = parseFloat($(this).text().split(' - ')[1].slice(0, -1));
+    
+          if (!isNaN(quantity) && !isNaN(price)) {
+            total += quantity * price;
 
-    var item = {
-      fruit: $(this).text().split(' (')[0],
-      variety: $(this).text().split(' (')[1].split(') -')[0],
-      quantity: parseFloat($(this).text().split(' - ')[0].split(' - ')[1]),
-      price: price.toFixed(2)
-    };
+            var item = {
+              fruit: $(this).text().split(' (')[0],
+              variety: $(this).text().split(' (')[1].split(') -')[0],
+              quantity: quantity,
+              price: price.toFixed(2)
+            };
 
-    basketItems.push(item);
-  });
+            basketItems.push(item);
+          }
+        });
 
-  $('.total-price span').text(total.toFixed(2));
+        $('.total-price span').text(total.toFixed(2));
 
-  // Sauvegarder les détails du panier dans le stockage local
-  localStorage.setItem('basketItems', JSON.stringify(basketItems));
-}
-
+        // Sauvegarder les détails du panier dans le stockage local
+        localStorage.setItem('basketItems', JSON.stringify(basketItems));
+      }
 
       // Gérer la sélection de la méthode de paiement
       $('.payment-method button').click(function() {
@@ -223,7 +232,7 @@
         var totalPrice = parseFloat($('.total-price span').text());
         if (!isNaN(totalPrice)) {
           // Ajouter le code de redirection vers la page "detailvente" ici
-          window.location.href = 'detailvente.html';
+          window.location.href = 'detailvente.php';
         } else {
           $('.error-message').text('Le panier est vide.');
         }
@@ -233,6 +242,7 @@
   </script>
 </head>
 <body>
+  <?php include('navbar.php');?>
   <h1>Vente de Fruits</h1>
 
   <div class="fruit-list"></div>
