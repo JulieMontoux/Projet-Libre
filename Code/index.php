@@ -4,7 +4,6 @@
   <title>Vente de Fruits</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
   <style>
     /* CSS pour la mise en page */
     body {
@@ -26,14 +25,14 @@
       border: 1px solid #ccc;
       cursor: pointer;
       text-align: center;
-      border-radius: 10px; /* Bordures arrondies */
+      border-radius: 10px;
     }
 
     .fruit-card img {
       width: 150px;
       height: 150px;
       object-fit: cover;
-      border-radius: 10px; /* Bordures arrondies */
+      border-radius: 10px; 
     }
 
     .varieties {
@@ -49,14 +48,14 @@
       border: 1px solid #ccc;
       cursor: pointer;
       text-align: center;
-      border-radius: 10px; /* Bordures arrondies */
+      border-radius: 10px; 
     }
 
     .variety-card img {
       width: 100px;
       height: 100px;
       object-fit: cover;
-      border-radius: 10px; /* Bordures arrondies */
+      border-radius: 10px;
     }
 
     .basket {
@@ -106,7 +105,7 @@
         },
         {
           name: "Pommes",
-          varieties: ["Golden", "Granny Smith", "Reinette", "Royal Gala", "Chantecler", "Braeburn", "Fuji", "Pink Lady"],
+          varieties: ["Golden", "Granny", "Reinette", "Royal Gala", "Chantecler", "Braeburn", "Fuji", "Pink Lady"],
           prices: [3.3, 2.7, 3.6, 2.9, 3.1, 2.9, 3.3, 4.8],
           images: ["../images/golden.jpg", "../images/granny_smith.jpg", "../images/reinette.jpg", "../images/royal_gala.jpg", "../images/chantecler.jpg", "../images/braeburn.jpg", "../images/fuji.jpg", "../images/pink_lady.jpg"]
         },
@@ -168,54 +167,53 @@
         $('.variety-card').click(function() {
           var selectedVariety = $(this).find('h5').text();
           var selectedQuantity = prompt('Quantité vendue :');
-
-        // Vérifier si la quantité saisie est un nombre valide
-        if (selectedQuantity !== null && selectedQuantity !== "" && !isNaN(selectedQuantity)) {
-          selectedQuantity = parseFloat(selectedQuantity);
-          var selectedPrice = fruits.find(function(fruit) {
-          return fruit.name === selectedFruit;
-          }).prices[selectedVarieties.indexOf(selectedVariety)];
-          var totalPrice = selectedPrice * selectedQuantity;
-
-          addToBasket(selectedFruit, selectedVariety, selectedQuantity, totalPrice);
-        }
+        
+          // Vérifier si la quantité saisie est un nombre valide
+          if (selectedQuantity !== null && selectedQuantity !== "" && !isNaN(selectedQuantity)) {
+            selectedQuantity = parseFloat(selectedQuantity);
+            var selectedPrice = fruits.find(function(fruit) {
+              return fruit.name === selectedFruit;
+            }).prices[selectedVarieties.indexOf(selectedVariety)];
+            var totalPrice = selectedPrice * selectedQuantity;
+          
+            addToBasket(selectedFruit, selectedVariety, selectedQuantity, totalPrice);
+            updateTotalPrice(); // Appel de la fonction pour mettre à jour le prix total
+          }
+        });
       });
 
-      });
-
-     // Fonction pour ajouter un fruit au panier
-    function addToBasket(fruit, variety, quantity, price) {
-      var basketItem = '<li>' + fruit + ' (' + variety + ') - ' + quantity.toString() + 'kg - ' + price.toFixed(2) + '€</li>';
-      $('.basket ul').append(basketItem);
-      updateTotalPrice(); // Appel de la fonction pour mettre à jour le prix total
-    }
-
+      // Fonction pour ajouter un fruit au panier
+      function addToBasket(fruit, variety, quantity, price) {
+        var basketItem = '<li>' + fruit + ' (' + variety + ') - ' + quantity.toString() + 'kg - ' + price.toFixed(2) + '€</li>';
+        $('.basket ul').append(basketItem);
+        updateTotalPrice(); // Appel de la fonction pour mettre à jour le prix total
+      }
 
       // Fonction pour mettre à jour le prix total
       function updateTotalPrice() {
         var total = 0;
         var basketItems = [];
-
+      
         $('.basket ul li').each(function() {
-          var quantity = parseFloat($(this).text().split(' - ')[0].split(' - ')[1]);
-          var price = parseFloat($(this).text().split(' - ')[1].slice(0, -1));
-    
+          var quantity = parseFloat($(this).text().split(' - ')[1].split('kg')[0]);
+          var price = parseFloat($(this).text().split(' - ')[2].split('€')[0]);
+        
           if (!isNaN(quantity) && !isNaN(price)) {
-            total += quantity * price;
-
+            total += price; 
+          
             var item = {
               fruit: $(this).text().split(' (')[0],
               variety: $(this).text().split(' (')[1].split(') -')[0],
               quantity: quantity,
               price: price.toFixed(2)
             };
-
+          
             basketItems.push(item);
           }
         });
-
+      
         $('.total-price span').text(total.toFixed(2));
-
+      
         // Sauvegarder les détails du panier dans le stockage local
         localStorage.setItem('basketItems', JSON.stringify(basketItems));
       }
@@ -237,7 +235,6 @@
           $('.error-message').text('Le panier est vide.');
         }
       });
-      
     });
   </script>
 </head>

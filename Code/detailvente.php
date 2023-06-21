@@ -4,7 +4,6 @@
   <title>Détail de la Vente</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
   <style>
     /* CSS pour la mise en page */
     body {
