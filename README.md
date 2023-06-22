@@ -13,3 +13,12 @@ Le panier final doit-il être dans stocker dans la bdd?
 Comment faire la partie closing sinon? 
 
 - faire une liste pour collecter le panier et faire le closing à partir de celle-ci
+
+
+### To Do List
+- réinitialisation du panier après envoie des données mais rester sur la page index
+- revoir envoie données dans la page 'detailvente' (plusieurs paniers)
+- possibilité de téléchargement du détail
+- revoir design (images)
+- revoir design detailvente (avec varieties du fruits et la quantité)
+- faire un total des ventes sur le tableau (si possible en fonction du mode de paiement)

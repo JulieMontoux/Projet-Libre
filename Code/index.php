@@ -3,7 +3,7 @@
 <head>
   <title>Vente de Fruits</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
   <style>
     /* CSS pour la mise en page */
     body {
@@ -228,9 +228,13 @@
       $('.checkout-button button').click(function() {
         var paymentMethod = $('.payment-method button.active').text();
         var totalPrice = parseFloat($('.total-price span').text());
-        if (!isNaN(totalPrice)) {
-          // Ajouter le code de redirection vers la page "detailvente" ici
-          window.location.href = 'detailvente.php';
+        if (totalPrice !== 0) {
+          if (paymentMethod === "") {
+            $('.error-message').text('Veuillez choisir une méthode de paiement.');
+          } else {
+            // Ajouter le code de redirection vers la page "detailvente" ici
+            window.location.href = 'index.php';
+          }
         } else {
           $('.error-message').text('Le panier est vide.');
         }
