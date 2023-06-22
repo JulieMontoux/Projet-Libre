@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Détail de la Vente</title>
+  <title>Historique des Ventes</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
@@ -20,7 +21,8 @@
       width: 80%;
     }
 
-    th, td {
+    th,
+    td {
       padding: 8px;
       text-align: left;
       border-bottom: 1px solid #ddd;
@@ -67,16 +69,16 @@
     .save-pdf-button button:hover {
       background-color: #58ACFA;
     }
-
   </style>
 </head>
-<body>
-  <?php include('navbar.php');?>
-  <h1>Détail de la Vente</h1>
 
+<body>
+  <?php include('navbar.php'); ?>
+  <h1>Historique des Ventes</h1>
   <table class="sale-details-table">
     <thead>
       <tr>
+        <th>Produit</th>
         <th>Variété</th>
         <th>Quantité vendue</th>
         <th>Prix</th>
@@ -85,8 +87,7 @@
     <tbody id="detail-vente-body"></tbody>
     <tfoot>
       <tr>
-        <th>Total</th>
-        <th></th>
+        <th colspan="3">Total de la journée</th>
         <th id="total-price"></th>
       </tr>
     </tfoot>
@@ -101,12 +102,11 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
-      // Récupérer les détails du panier depuis le stockage local
-      var basketItems = JSON.parse(localStorage.getItem('basketItems'));
+      var basketItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+      console.log(basketItems);
 
       // Vérifier si des articles sont présents dans le panier
       if (basketItems && basketItems.length > 0) {
@@ -117,62 +117,92 @@
         function generateTable() {
           // Générer les lignes du tableau pour chaque variété
           var tableRows = '';
-          var totalPrice = 0;
+          var total = 0;
           uniqueVarieties.forEach(function(variety) {
             var varietyItems = basketItems.filter(item => item.variety === variety);
             var totalQuantity = varietyItems.reduce((acc, item) => acc + item.quantity, 0);
             var price = Number(varietyItems[0].price);
-            var totalPriceForVariety = price * totalQuantity;
+            var totalPrice = price;
             tableRows += '<tr>';
-            tableRows += '<td>' + variety + '</td>';
-            tableRows += '<td>' + totalQuantity + '</td>';
-            tableRows += '<td>' + price.toFixed(2) + '€</td>'; // Formater le prix avec deux décimales
+            tableRows += '<td>' + varietyItems[0].fruit + ' </td>';
+            tableRows += '<td>' + variety + ' </td>';
+            tableRows += '<td>' + totalQuantity + ' </td>';
+            tableRows += '<td>' + price.toFixed(2) + '€ </td></n>';
             tableRows += '</tr>';
-            totalPrice += totalPriceForVariety;
+            total += totalPrice;
           });
 
           $('#detail-vente-body').html(tableRows);
-          $('#total-price').text(totalPrice.toFixed(2) + '€');
+          $('#total-price').text(total.toFixed(2) + '€');
         }
 
         // Générer le tableau des détails de la vente
         generateTable();
+
+        // Gérer le clic sur le bouton de réinitialisation de la journée
+        $('.reset-button button').click(function() {
+          // Réinitialiser les détails de la vente
+          basketItems = [];
+          // Mettre à jour le panier dans le local storage
+          localStorage.setItem('basketItems', JSON.stringify(basketItems));
+
+          // Vider le tableau des détails de vente
+          $('#detail-vente-body').empty();
+          $('#total-price').text('');
+          // Rafraîchir la page
+          location.reload();
+        });
+
+        // Gérer le clic sur le bouton "Nouvelle journée"
+        $('.new-day-button button').click(function() {
+          // Vider le tableau des détails de vente
+          $('#detail-vente-body').empty();
+          $('#total-price').text('');
+
+          // Réinitialiser les détails de la vente
+          basketItems = [];
+          // Mettre à jour le panier dans le local storage
+          localStorage.setItem('basketItems', JSON.stringify(basketItems));
+
+          // Générer le tableau des détails de la vente
+          generateTable();
+
+          // Afficher un message de succès
+          $('.error-message').text('La journée a été réinitialisée avec succès.');
+        });
+
+        // Gérer le clic sur le bouton "Sauvegarder en PDF"
+        $('.save-pdf-button button').click(function() {
+          var pdfContent = $('<table>').append($('.sale-details-table').find('tbody').clone()); // Créer un tableau contenant uniquement les lignes du tableau des détails de vente
+          var pdfFileName = 'vente.pdf';
+
+          // Personnaliser l'apparence du PDF
+          pdfContent.css('border', '10px solid #ddd');
+          pdfContent.find('th').css('background-color', '#f2f2f2');
+
+          // Convertir le contenu PDF en format PDF
+          html2pdf().set({
+            margin: 10,
+            filename: pdfFileName,
+            image: {
+              type: 'jpeg',
+              quality: 0.98
+            },
+            html2canvas: {
+              scale: 2
+            },
+            jsPDF: {
+              unit: 'mm',
+              format: 'a4',
+              orientation: 'portrait'
+            }
+          }).from(pdfContent.html()).save();
+        });
       }
-
-      // Gérer le clic sur le bouton de réinitialisation du panier
-      $('.reset-button').click(function() {
-        // Réinitialiser le panier
-        $('.basket ul').empty();
-        updateTotalPrice(); // Mettre à jour le prix total
-
-        // Afficher un message de succès
-        $('.error-message').text('Le panier a été réinitialisé avec succès.');
-      });
-
-      // Gérer le clic sur le bouton "Nouvelle journée"
-      $('.reset-button button').click(function() {
-        // Réinitialiser le panier
-        localStorage.removeItem('basketItems');
-        $('#detail-vente-body').empty();
-        $('#total-price').text('');
-
-        // Afficher un message de succès
-        $('.error-message').text('La journée a été réinitialisée avec succès.');
-      });
-
-      // Gérer le clic sur le bouton "Sauvegarder en PDF"
-      $('.save-pdf-button').click(function() {
-        var pdfContent = $('.sale-details-table').clone(); // Cloner le tableau des détails de la vente
-        var pdfFileName = 'vente.pdf';
-
-        // Supprimer les boutons de réinitialisation et de sauvegarde PDF du contenu PDF
-        pdfContent.find('.reset-button').remove();
-        pdfContent.find('.save-pdf-button').remove();
-
-        // Convertir le contenu PDF en format PDF
-        html2pdf().from(pdfContent.html()).save(pdfFileName);
-      });
     });
   </script>
+
+
 </body>
+
 </html>

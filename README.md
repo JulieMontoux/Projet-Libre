@@ -16,9 +16,7 @@ Comment faire la partie closing sinon?
 
 
 ### To Do List
-- réinitialisation du panier après envoie des données mais rester sur la page index
 - revoir envoie données dans la page 'detailvente' (plusieurs paniers)
-- possibilité de téléchargement du détail
+-> possibilité de téléchargement du détail
 - revoir design (images)
-- revoir design detailvente (avec varieties du fruits et la quantité)
-- faire un total des ventes sur le tableau (si possible en fonction du mode de paiement)
+-> faire un total des ventes sur le tableau (si possible en fonction du mode de paiement)

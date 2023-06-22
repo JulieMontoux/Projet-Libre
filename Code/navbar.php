@@ -11,7 +11,9 @@
     <!-- Navbar bootstrap simple -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand">EARL Villemur</a>
+            <a class="navbar-brand">
+            <img src="../Images/logo.jpg" width="50" height="50" alt="">
+                EARL Villemur</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
