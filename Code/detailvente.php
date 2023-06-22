@@ -100,7 +100,9 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script>
     $(document).ready(function() {
       // Récupérer les détails du panier depuis le stockage local
@@ -119,7 +121,7 @@
           uniqueVarieties.forEach(function(variety) {
             var varietyItems = basketItems.filter(item => item.variety === variety);
             var totalQuantity = varietyItems.reduce((acc, item) => acc + item.quantity, 0);
-            var price = varietyItems[0].price; // Récupérer le prix du premier élément de la variété
+            var price = Number(varietyItems[0].price);
             var totalPriceForVariety = price * totalQuantity;
             tableRows += '<tr>';
             tableRows += '<td>' + variety + '</td>';
