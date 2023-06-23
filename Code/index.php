@@ -240,10 +240,6 @@
         });
 
         $('.total-price span').text(total.toFixed(2));
-
-        // Sauvegarder les détails du panier dans le stockage local
-        var historique = [];
-        historique.push(localStorage.setItem('basketItems', JSON.stringify(basketItems)));
       }
 
       // Gérer la sélection de la méthode de paiement
