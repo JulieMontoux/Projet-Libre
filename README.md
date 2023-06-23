@@ -1,6 +1,6 @@
 # Projet libre
 ## Contexte
-L'entreprise X souhaite avoir une solution applicative pour pouvoir gérer son stock, sa chiffre d'affaires à la journée et qui lui permette de faire ses comptes tous les jours. Elle aimerait aussi pouvoir sortir des factures et envoyer des reçus par mail. 
+L'entreprise X souhaite avoir une solution applicative pour pouvoir gérer sa vente et qui lui permette de faire ses comptes tous les jours. 
 
 ## Idées
 - techno: Tailwind? Bootstrap? JS ou PHP?
@@ -17,6 +17,6 @@ Comment faire la partie closing sinon?
 
 ### Modif à apporter
 - revoir envoie données dans la page 'detailvente' (plusieurs paniers)
--> possibilité de téléchargement du détail
+- possibilité de téléchargement du détail
 - revoir design (images)
--> faire un total des ventes sur le tableau (si possible en fonction du mode de paiement)
+- faire un total des ventes sur le tableau (si possible en fonction du mode de paiement)
