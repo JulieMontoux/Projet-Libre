@@ -15,7 +15,7 @@ Comment faire la partie closing sinon?
 - faire une liste pour collecter le panier et faire le closing à partir de celle-ci
 
 
-### To Do List
+### Modif à apporter
 - revoir envoie données dans la page 'detailvente' (plusieurs paniers)
 -> possibilité de téléchargement du détail
 - revoir design (images)
