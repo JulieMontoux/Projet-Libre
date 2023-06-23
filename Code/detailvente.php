@@ -120,7 +120,7 @@
           var total = 0;
           uniqueVarieties.forEach(function(variety) {
             var varietyItems = basketItems.filter(item => item.variety === variety);
-            var totalQuantity = varietyItems.reduce((acc, item) => item.quantity, 0);
+            var totalQuantity = (varietyItems.reduce((acc, item) => acc + item.quantity, 0)/2);
             var price = Number(varietyItems[0].price);
             var totalPrice = price;
             tableRows += '<tr>';
@@ -151,24 +151,6 @@
           $('#total-price').text('');
           // Rafraîchir la page
           location.reload();
-        });
-
-        // Gérer le clic sur le bouton "Nouvelle journée"
-        $('.new-day-button button').click(function() {
-          // Vider le tableau des détails de vente
-          $('#detail-vente-body').empty();
-          $('#total-price').text('');
-
-          // Réinitialiser les détails de la vente
-          basketItems = [];
-          // Mettre à jour le panier dans le local storage
-          localStorage.setItem('basketItems', JSON.stringify(basketItems));
-
-          // Générer le tableau des détails de la vente
-          generateTable();
-
-          // Afficher un message de succès
-          $('.error-message').text('La journée a été réinitialisée avec succès.');
         });
 
         // Gérer le clic sur le bouton "Sauvegarder en PDF"
