@@ -263,6 +263,36 @@
           $('.error-message').text('Le panier est vide.');
         }
       });
+
+      // Mettre à jour le tableau des détails de vente
+      function updateSaleDetailsTable() {
+        var tableBody = $('#detail-vente-body');
+        tableBody.empty();
+
+        saleDetails.forEach(function(detail) {
+          var newRow = '<tr>';
+          newRow += '<td>' + detail.fruit + '</td>';
+          newRow += '<td>' + detail.variety + '</td>';
+          newRow += '<td>' + detail.quantity + '</td>';
+          newRow += '<td>' + detail.price + '€</td>';
+          newRow += '</tr>';
+
+          tableBody.prepend(newRow);
+        });
+      }
+
+      // Ajouter les détails de vente à la liste
+      function addToSaleDetails(fruit, variety, quantity, price) {
+        var detail = {
+          fruit: fruit,
+          variety: variety,
+          quantity: quantity,
+          price: price.toFixed(2)
+        };
+
+        saleDetails.push(detail);
+        updateSaleDetailsTable();
+      }
     });
   </script>
 </head>
